@@ -1,12 +1,35 @@
 def parse_booking(code):
-    airline, flight, seat = code.split('-')
+    if not code or not isinstance(code, str):
+        return None
+    parts = code.strip().split('-')
+    if len(parts) != 3:
+        return None
+    airline, flight, seat = parts
+    if not airline or not flight.isdigit() or not seat:
+        return None
     return airline.upper(), int(flight), seat[-1].upper()
 
 def total_weight(weights_csv):
-    return sum(float(w) for w in weights_csv.split(','))
+    if not weights_csv or not isinstance(weights_csv, str):
+        return 0.0
+    total = 0.0
+    for w in weights_csv.split(','):
+        cleaned = w.strip()
+        if cleaned:
+            try:
+                total += float(cleaned)
+            except ValueError:
+                pass
+    return round(total, 2)
 
 def tag_label(name):
-    parts = name.split()
+    if not name or not isinstance(name, str):
+        return ""
+    parts = name.strip().split()
+    if len(parts) == 0:
+        return ""
+    elif len(parts) == 1:
+        return parts[0].upper()
     return parts[0][0].upper() + '. ' + parts[1].upper()
 
 def main():
